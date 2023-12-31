@@ -6,8 +6,12 @@ name: .NET
 on:
   push:
     branches: [ "main" ]
+    paths:
+    - 'src/Toess.WebApi/**'
   pull_request:
     branches: [ "main" ]
+    paths:
+    - 'src/Toess.WebApi/**'
 
 jobs:
   build:
