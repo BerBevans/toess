@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Toess.WebApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+11c8f490d6056c1fdc298880b6d8fe4a83e9c690")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Toess.WebApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Toess.WebApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
