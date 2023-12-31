@@ -1,0 +1,6 @@
+@Toess.WebApi_HostAddress = http://localhost:5293
+
+GET {{Toess.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

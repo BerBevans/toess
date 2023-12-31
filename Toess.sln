@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B8BC5084-87EF-4AD2-9A12-7210252F3924}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toess.WebApi", "src\Toess.WebApi\Toess.WebApi.csproj", "{944F0D02-6ACA-4738-AF8D-876AB89BC5C7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6628949F-DC88-4282-9EF8-F3749029ECCF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integration-tests", "integration-tests", "{D838187A-34D5-43AE-A43C-3630124FB592}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toess.WebApi.tests", "tests\integration-tests\Toess.WebApi.tests\Toess.WebApi.tests.csproj", "{C26B14AB-1B9E-477B-B793-D99EE7C1BBD8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{944F0D02-6ACA-4738-AF8D-876AB89BC5C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{944F0D02-6ACA-4738-AF8D-876AB89BC5C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{944F0D02-6ACA-4738-AF8D-876AB89BC5C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{944F0D02-6ACA-4738-AF8D-876AB89BC5C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C26B14AB-1B9E-477B-B793-D99EE7C1BBD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C26B14AB-1B9E-477B-B793-D99EE7C1BBD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C26B14AB-1B9E-477B-B793-D99EE7C1BBD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C26B14AB-1B9E-477B-B793-D99EE7C1BBD8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{944F0D02-6ACA-4738-AF8D-876AB89BC5C7} = {B8BC5084-87EF-4AD2-9A12-7210252F3924}
+		{D838187A-34D5-43AE-A43C-3630124FB592} = {6628949F-DC88-4282-9EF8-F3749029ECCF}
+		{C26B14AB-1B9E-477B-B793-D99EE7C1BBD8} = {D838187A-34D5-43AE-A43C-3630124FB592}
+	EndGlobalSection
+EndGlobal
