@@ -202,3 +202,13 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+
+# .Net project build files 
+src/Toess.WebApi/bin/**
+src/Toess.WebApi/obj/**
+tests/integration-tests/Toess.WebApi.tests/bin/**
+tests/integration-tests/Toess.WebApi.tests/obj/**
+
+# React build files
+src/toess-react/node_modules/**
+src/toess-react/public/**
