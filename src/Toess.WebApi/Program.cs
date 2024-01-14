@@ -22,27 +22,25 @@ builder.Services.AddOpenTelemetry()
     .WithTracing(tracing => tracing
         .AddHoneycomb(honeycombOptions)
         .AddCommonInstrumentations()
-        // .AddAspNetCoreInstrumentation()
-        // .AddHttpClientInstrumentation()
-        
-        // .AddOtlpExporter(option =>
-        // {
-        //     option.Endpoint = new Uri("https://api.eu1.honeycomb.io/v1/traces");
-        //     option.Headers = $"x-honeycomb-team=zGIc4yXnFfasp7M5twLvED";
-        //     option.Protocol = OtlpExportProtocol.HttpProtobuf;
-        // })
-        .AddConsoleExporter())
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation()
+        )
     .WithMetrics(metrics => metrics
         .AddAspNetCoreInstrumentation()
-        .AddConsoleExporter()
     );
 builder.Services.AddSingleton(TracerProvider.Default.GetTracer(honeycombOptions.ServiceName));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.WithOrigins("*"));
+});
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
@@ -52,8 +50,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 
 var summaries = new[]
 {
@@ -77,6 +73,8 @@ app.MapGet("/weatherforecast", (Tracer tracer) =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+app.UseCors("AllowAllOrigins");
 
 app.Run();
 
