@@ -2,38 +2,41 @@ using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Toess.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
-const string serviceName = "WebApi";
-
-var honeycombOptions = builder.Configuration.GetHoneycombOptions();
+builder.Logging.ClearProviders();
 
 builder.Logging.AddOpenTelemetry(options =>
 {
+    options.IncludeScopes = true;
+    options.IncludeFormattedMessage = true;
+
     options
         .SetResourceBuilder(
             ResourceBuilder.CreateDefault()
-                .AddService(serviceName))
-        .AddConsoleExporter();
+                .ConfigureOtelService()
+        )
+        .AddOtlpExporter();
 });
 builder.Services.AddOpenTelemetry()
-    .ConfigureResource(resource => resource.AddService(serviceName))
+    .ConfigureResource(resource => resource
+        .ConfigureOtelService())
     .WithTracing(tracing => tracing
-        .AddHoneycomb(honeycombOptions)
-        .AddCommonInstrumentations()
         .AddAspNetCoreInstrumentation()
         .AddHttpClientInstrumentation()
-        )
+        .AddOtlpExporter()
+    )
     .WithMetrics(metrics => metrics
         .AddAspNetCoreInstrumentation()
+        .AddOtlpExporter()
     );
-builder.Services.AddSingleton(TracerProvider.Default.GetTracer(honeycombOptions.ServiceName));
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
-        builder => builder.WithOrigins("*"));
+        corsbuilder => corsbuilder.WithOrigins("*"));
 });
 
 // Add services to the container.
@@ -56,33 +59,45 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/weatherforecast", (Tracer tracer) =>
-{
-    using var span = tracer.StartActiveSpan("app.manual-span");
-    span.SetAttribute("app.manual-span.message", "Adding custom spans is also super easy!");
-    
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 56),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.MapGet("/weatherforecast", (ILogger<Program> logger) => // (Tracer tracer) =>
+    {
+        // using var span = tracer.StartActiveSpan("app.manual-span");
+        // span.SetAttribute("app.manual-span.message", "Adding custom spans is also super easy!");
+
+        logger.LogInformation("weatherforecast page visited at {DT}",
+            DateTime.UtcNow.ToLongTimeString());
+
+        var forecast = Enumerable.Range(1, 5).Select(index =>
+                new WeatherForecast
+                (
+                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                    Random.Shared.Next(-20, 56),
+                    summaries[Random.Shared.Next(summaries.Length)]
+                ))
+            .ToArray();
+        return forecast;
+    })
+    .WithName("GetWeatherForecast")
+    .WithOpenApi();
+
+
+app.MapGet("/test", (ILogger<Program> logger) => // (Tracer tracer) =>
+    {
+        logger.LogInformation("test page visited at {DT}",
+            DateTime.UtcNow.ToLongTimeString());
+
+        return "hello world";
+    })
+    .WithName("TestPage")
+    .WithOpenApi();
 
 app.UseCors("AllowAllOrigins");
 
 app.Run();
 
-public partial class Program
-{
-}
+public partial class Program;
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
