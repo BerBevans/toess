@@ -36,7 +36,9 @@ builder.Services.AddOpenTelemetry()
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
-        corsbuilder => corsbuilder.WithOrigins("*"));
+        corsbuilder => corsbuilder.WithOrigins("*")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
 
 // Add services to the container.
